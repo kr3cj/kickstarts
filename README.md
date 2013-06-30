@@ -1,2 +1,3 @@
 kickstarts
 ==========
+Centos / RHEL kickstarts
