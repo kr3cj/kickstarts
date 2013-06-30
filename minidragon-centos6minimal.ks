@@ -2,9 +2,9 @@ install
 text
 skipx
 url --url http://mirror.cogentco.com/pub/linux/centos/6/os/x86_64/
-repo --name=updates --baseurl=http://mirror.cogentco.com/pub/linux/centos/6/updates/x86_64/
-repo --name=rpmfusion --baseurl=http://pkgs.repoforge.org/rpmforge-release/
-# repo --name=epel --baseurl=http://download.fedoraproject.org/pub/epel/6/x86_64/
+repo --name=updates	--baseurl=http://mirror.cogentco.com/pub/linux/centos/6/updates/x86_64/
+repo --name=rpmfusion	--baseurl=http://pkgs.repoforge.org/rpmforge-release/
+# repo --name=epel	--baseurl=http://download.fedoraproject.org/pub/epel/6/x86_64/
 lang en_US.UTF-8
 keyboard us
 rootpw --iscrypted $1$ZBPaRszr$/hHqikLgPn4I/T/n2zdy41
@@ -73,12 +73,12 @@ cat << EOF > /tmp/partinfo
 part /boot --fstype ext4 --fsoptions="noatime" --size 200 --recommended
 part pv.00 --asprimary --grow --size=1 --ondisk=$d1
 volgroup vg_p01appbugz0190 pv.00
-logvol swap --vgname=vg_p01appbugz0190 --fstype="swap" --size=512 --name=lv_swap
-ogvol /var --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --grow --size=512 --name=lv_var
-logvol /home --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=256 --name=lv_home
-logvol /opt --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=32 --name=lv_opt
-logvol /tmp --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=512 --name=lv_tmp
-logvol / --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=3072 --name=lv_root
+logvol swap	--vgname=vg_p01appbugz0190 --fstype="swap" --size=512 --name=lv_swap
+ogvol /var	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --grow --size=512 --name=lv_var
+logvol /home	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=256 --name=lv_home
+logvol /opt	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=32 --name=lv_opt
+logvol /tmp	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=512 --name=lv_tmp
+logvol /	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=3072 --name=lv_root
 logvol /usr/local --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=512 --name=lv_usrlocal
 %end
 
