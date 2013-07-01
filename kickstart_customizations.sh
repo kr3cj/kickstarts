@@ -1,4 +1,23 @@
-#!/binb/bash
+#!/bin/bash
+
+
+# ssd optimizations
+# see https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html-single/Storage_Administration_Guide/index.html#newmds-ssdtuning
+# see https://wiki.archlinux.org/index.php/SSD
+# echo noop > /sys/block/sda/queue/scheduler
+
+echo "enable AHCI in bios..."
+
+echo "
+vm.swappiness=1
+vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
+
+# echo "move /tmp to RAM in /etc/fstab?"
+
+sed -ci 's/issue_discards\ =\ 0/issue_discards\ =\ 1/g' /etc/lvm/lvm.conf
+
+echo "update ssd firmware: http://www.samsung.com/global/business/semiconductor/samsungssd/downloads.html"
+
 
 ###### FUNCTION SECTION ######
 
@@ -6,7 +25,7 @@ function configHypervisor()
 {
   yum install kvm libvirt -y
     service libvirtd restart
-  groupadd libvirt
+	groupadd libvirt
 	usermod -a -G kvm corey
 	usermod -a -G libvirt corey
 	virsh iface-bridge eth0 br0
