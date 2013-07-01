@@ -11,6 +11,7 @@ rootpw --iscrypted <CHANGE>
 user --name=corey --password=<CHANGE> --iscrypted
 firewall --service=ssh
 
+part /boot --fstype ext4 --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard"
 # System authorization information
 authconfig --enableshadow --passalgo=sha512
 
@@ -69,17 +70,18 @@ d1=$1
 d2=$3
 
 # Print partition info to file to be imported in the main section of the kickstart
-cat << EOF > /tmp/partinfo
-part /boot --fstype ext4 --fsoptions="noatime" --size 200 --recommended
+cat << EOF > /tmp/partinfo" --size 200 --recommended
 part pv.00 --asprimary --grow --size=1 --ondisk=$d1
 volgroup vg_p01appbugz0190 pv.00
-logvol swap	--vgname=vg_p01appbugz0190 --fstype="swap" --size=512 --name=lv_swap
-ogvol /var	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --grow --size=512 --name=lv_var
-logvol /home	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=256 --name=lv_home
-logvol /opt	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=32 --name=lv_opt
-logvol /tmp	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=512 --name=lv_tmp
-logvol /	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=3072 --name=lv_root
-logvol /usr/local --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime" --size=512 --name=lv_usrlocal
+logvol swap --vgname=vg_p01appbugz0190 --fstype="swap" --size=512 --name=lv_swap
+logvol /var  --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --grow --size=512 --name=lv_var
+logvol /home    --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=256 --name=lv_home
+logvol /opt --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=32 --name=lv_opt
+# logvol /tmp	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=512 --name=lv_tmp
+none       /tmp      tmpfs        defaults      0 0
+none       /var/tmp      tmpfs        defaults      0 0
+logvol /	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=3072 --name=lv_root
+logvol /usr/local --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=512 --name=lv_usrlocal
 %end
 
 %packages --nobase
@@ -156,11 +158,12 @@ ntpdate 0.centos.pool.ntp.org
 service ntpd start
 EOF
 
+# kickstart customizations
 wget "http://hawkeye.kinnick/kickstart_customizations.sh" --output-document="/root/kickstart_customizations.sh"
 bash /tmp/kickstart_customizations.sh
 
 # Start post install kernel options update
-/sbin/grubby --update-kernel=`/sbin/grubby --default-kernel` --args="noipv6 amd_iommu=on"
+/sbin/grubby --update-kernel=`/sbin/grubby --default-kernel` --args="noipv6 amd_iommu=on elevator=noop"
 if ( grep -q '6\.' /etc/redhat-release ) ; then
 	/usr/sbin/plymouth-set-default-theme details
 	/usr/libexec/plymouth/plymouth-update-initrd
