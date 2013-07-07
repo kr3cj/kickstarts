@@ -18,6 +18,17 @@ sed -ci 's/issue_discards\ =\ 0/issue_discards\ =\ 1/g' /etc/lvm/lvm.conf
 
 echo "update ssd firmware: http://www.samsung.com/global/business/semiconductor/samsungssd/downloads.html"
 
+# begin Red Hat management server registration
+service messagebus start
+service haldaemon start
+# mkdir -p /usr/share/rhn/
+wget http://ferentz.kinnick/pub/RHN-ORG-TRUSTED-SSL-CERT -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT   
+# rhnreg_ks --serverUrl=https://ferentz.kinnick/XMLRPC --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --profilename=`echo $HOSTNAME` --activationkey=8d3ba2cf40c5eeae98b4b41559f045c3
+
+# use new satellite server
+cd /tmp/
+wget -O - http://ferentz.kinnick/pub/bootstrap/bootstrap-base.sh | /bin/bash
+
 
 ###### FUNCTION SECTION ######
 
