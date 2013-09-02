@@ -4,10 +4,13 @@
 # ssd optimizations
 # see https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html-single/Storage_Administration_Guide/index.html#newmds-ssdtuning
 # see https://wiki.archlinux.org/index.php/SSD
-# echo noop > /sys/block/sda/queue/scheduler
+echo deadline > /sys/block/sda/queue/scheduler
 
 echo "enable AHCI in bios..."
 
+# swap on ssd?
+# https://wiki.archlinux.org/index.php/Solid_State_Drives#Swap_Space_on_SSDs
+echo 1 > /proc/sys/vm/swappiness
 echo "
 vm.swappiness=1
 vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
@@ -15,19 +18,6 @@ vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
 # echo "move /tmp to RAM in /etc/fstab?"
 
 sed -ci 's/issue_discards\ =\ 0/issue_discards\ =\ 1/g' /etc/lvm/lvm.conf
-
-echo "update ssd firmware: http://www.samsung.com/global/business/semiconductor/samsungssd/downloads.html"
-
-# begin Red Hat management server registration
-service messagebus start
-service haldaemon start
-# mkdir -p /usr/share/rhn/
-wget http://ferentz.kinnick/pub/RHN-ORG-TRUSTED-SSL-CERT -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT   
-# rhnreg_ks --serverUrl=https://ferentz.kinnick/XMLRPC --sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT --profilename=`echo $HOSTNAME` --activationkey=8d3ba2cf40c5eeae98b4b41559f045c3
-
-# use new satellite server
-cd /tmp/
-wget -O - http://ferentz.kinnick/pub/bootstrap/bootstrap-base.sh | /bin/bash
 
 
 ###### FUNCTION SECTION ######
