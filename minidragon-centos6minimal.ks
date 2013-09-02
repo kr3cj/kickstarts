@@ -163,7 +163,7 @@ wget "http://hawkeye.kinnick/kickstart_customizations.sh" --output-document="/ro
 bash /tmp/kickstart_customizations.sh
 
 # Start post install kernel options update
-/sbin/grubby --update-kernel=`/sbin/grubby --default-kernel` --args="noipv6 amd_iommu=on elevator=noop"
+/sbin/grubby --update-kernel=`/sbin/grubby --default-kernel` --args="noipv6 amd_iommu=on elevator=deadline"
 if ( grep -q '6\.' /etc/redhat-release ) ; then
 	/usr/sbin/plymouth-set-default-theme details
 	/usr/libexec/plymouth/plymouth-update-initrd
