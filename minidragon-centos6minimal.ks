@@ -72,16 +72,16 @@ d2=$3
 # Print partition info to file to be imported in the main section of the kickstart
 cat << EOF > /tmp/partinfo" --size 200 --recommended
 part pv.00 --asprimary --grow --size=1 --ondisk=$d1
-volgroup vg_p01appbugz0190 pv.00
-logvol swap --vgname=vg_p01appbugz0190 --fstype="swap" --size=512 --name=lv_swap
-logvol /var  --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --grow --size=512 --name=lv_var
-logvol /home    --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=256 --name=lv_home
-logvol /opt --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=32 --name=lv_opt
-# logvol /tmp	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=512 --name=lv_tmp
+volgroup vg_fry pv.00
+logvol swap --vgname=vg_fry --fstype="swap" --size=512 --name=lv_swap
+logvol /var  --vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --grow --size=512 --name=lv_var
+logvol /home    --vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=256 --name=lv_home
+logvol /opt --vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=32 --name=lv_opt
+# logvol /tmp	--vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=512 --name=lv_tmp
 none       /tmp      tmpfs        defaults      0 0
 none       /var/tmp      tmpfs        defaults      0 0
-logvol /	--vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=3072 --name=lv_root
-logvol /usr/local --vgname=vg_p01appbugz0190 --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=512 --name=lv_usrlocal
+logvol /	--vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=3072 --name=lv_root
+logvol /usr/local --vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime,discard" --size=512 --name=lv_usrlocal
 %end
 
 %packages --nobase
