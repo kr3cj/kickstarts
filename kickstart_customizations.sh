@@ -17,7 +17,20 @@ vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
 
 # echo "move /tmp to RAM in /etc/fstab?"
 
-sed -ci 's/issue_discards\ =\ 0/issue_discards\ =\ 1/g' /etc/lvm/lvm.conf
+# sed -ci 's/issue_discards\ =\ 0/issue_discards\ =\ 1/g' /etc/lvm/lvm.conf
+mkdir -pv /opt/scripts
+cat << EOF >>
+#!/bin/bash
+# manual fstrim job is better than discard mount option for SSDs
+# see http://jaysonrowe.blogspot.com/2012/12/linux-ssds.html
+LOG=/var/log/trim.log
+(
+echo -e "\n*** $(date -R) ***"
+for PART in $(df | grep /dev/mapper | grep -v \/$ | awk '{print $6}'); do
+  fstrim -v "${PART}"
+done
+) 2>&1 | tee -a ${LOG}
+EOF
 
 
 ###### FUNCTION SECTION ######
