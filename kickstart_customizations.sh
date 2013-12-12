@@ -6,6 +6,12 @@
 # see https://wiki.archlinux.org/index.php/SSD
 echo deadline > /sys/block/sda/queue/scheduler
 
+# for hot videocards
+# see http://www.x.org/wiki/RadeonFeature/
+# or https://wiki.archlinux.org/index.php/ATI
+echo low > /sys/class/drm/card0/device/power_profile
+# how to make persistent ?
+
 echo "enable AHCI in bios..."
 
 # swap on ssd?
