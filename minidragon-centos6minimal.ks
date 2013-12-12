@@ -80,7 +80,7 @@ logvol /opt --vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,
 # logvol /tmp	--vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime" --size=512 --name=lv_tmp
 none       /tmp      tmpfs        defaults      0 0
 none       /var/tmp      tmpfs        defaults      0 0
-logvol /	--vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime" --size=3072 --name=lv_root
+logvol /	--vgname=vg_fry --fstype="ext4" --fsoptions="noatime,commit=15,nodiratime" --size=3072 --name=lv_root
 logvol /usr/local --vgname=vg_fry --fstype="ext4" --fsoptions="noatime,data=writeback,commit=15,nodiratime" --size=512 --name=lv_usrlocal
 %end
 
