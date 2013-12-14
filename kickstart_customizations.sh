@@ -5,6 +5,24 @@
 # see https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html-single/Storage_Administration_Guide/index.html#newmds-ssdtuning
 # see https://wiki.archlinux.org/index.php/SSD
 echo deadline > /sys/block/sda/queue/scheduler
+# how to make persistent ?
+
+# schedule fstrim command
+mkdir /usr/local/scripts
+cat << EOF >> /usr/local/scripts/trim
+#!/bin/bash
+LOG=/var/log/trim.log
+for MOUNT in $(df -h | grep mapper | awk '{print $6}') ; do
+  fstrim -v ${MOUNT} >> ${LOG}
+done
+EOF
+chmod 755 /usr/local/scripts/trim
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 23 * * * /usr/local/scripts/trim" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
 
 # for hot videocards
 # see http://www.x.org/wiki/RadeonFeature/
